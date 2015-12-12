@@ -21,7 +21,6 @@ class UserLandingController {
     def agree = {
         new AccessLog(username: springSecurityService.getPrincipal().username, event: "Disclaimer accepted",
                 accesstime: new Date()).save()
-                //redirect(uri: '/RWG')
 		redirect(controller: "datasetExplorer", action: "index") // should be this instead
     }
 
