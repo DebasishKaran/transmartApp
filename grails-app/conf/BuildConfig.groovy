@@ -19,7 +19,7 @@ grails.project.fork = [
 
 grails.project.war.file = "target/${appName}.war"
 grails.plugin.location.'rdc-rmodules' = '../Rmodules'
-grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
+//grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
 grails.plugin.location.'transmart-rest-api'='../transmart-rest-api'
 grails.plugin.location.'search-domain' = '../transmart-extensions/search-domain'
 grails.plugin.location.'biomart-domain' = '../transmart-extensions/biomart-domain'
@@ -146,7 +146,7 @@ grails.project.dependency.resolution = {
 
         // support for static code analysis - see codenarc.reports property below
         compile ":codenarc:0.21"
-		compile(':gex:0.1')
+	//compile(':gex:0.1')
 
 
         if (!dm) {
