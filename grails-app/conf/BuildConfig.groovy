@@ -130,7 +130,7 @@ grails.project.dependency.resolution = {
         build ':rest-client-builder:2.0.1'
         build ':tomcat:7.0.52.1'
 
-        compile ':hibernate:3.6.10.10'
+        compile ':hibernate:3.6.10.16'
         compile ':cache-ehcache:1.0.5'
         compile ':quartz:1.0-RC2'
         // Not compatible with spring security 3.2 yet
