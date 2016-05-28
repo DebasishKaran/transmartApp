@@ -1,6 +1,7 @@
 package org.transmartproject.search
 
 import grails.converters.JSON
+import grails.util.Holders
 import grails.validation.Validateable
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.response.QueryResponse
@@ -48,7 +49,7 @@ class FacetsSearchController {
                                           PSEUDO_FIELD_ALL,]
 
     private static final Pattern LUCENE_SPECIAL_CHARACTER = ~/[\Q+-&|!(){}[]^"~*?:\\E]/
-    private static final int MAX_RESULTS = 100
+    private static final int MAX_RESULTS = 20
 
     // for faceting
     def getFilterCategories() {
@@ -58,7 +59,8 @@ class FacetsSearchController {
     // Return search categories for the drop down
     def getSearchCategories() {
         render facetsQueryingService.allDisplaySettings.findAll { e ->
-            !e.value.hideFromListings
+            !(e.value.hideFromListings ||
+                    e.key in (Holders.config.org.transmartproject.hidden_fields ?: []))
         }.collectEntries { e ->
             [e.key, e.value.displayName]
         } as JSON

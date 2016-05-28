@@ -120,7 +120,13 @@
 
     window.rwgSearchConfig = {
         requiredField: 'CONCEPT_PATH',
-        onConceptsListChanges: function() { window.datasetExplorer_conceptsListChanges.apply(this, arguments); },
+        onConceptsListChanges: function() {
+            var args = arguments;
+            var that = this;
+            Ext.onReady(function() {
+                window.datasetExplorer_conceptsListChanges.apply(that, args);
+            });
+        }
     };
     var dseOpenedNodes = "${dseOpenedNodes}";
     var dseClosedNodes = "${dseClosedNodes}";
@@ -152,7 +158,7 @@
 <tmpl:/RWG/boxSearch hide="true"/>
 <tmpl:/RWG/filterBrowser/>
 <div id="sidebartoggle">&nbsp;</div>
-<div id="noAnalyzeResults" style="display: none;">No subject-level results found.<br/><!--<g:link controller="RWG" action="index">Switch to Browse view</g:link>--></div>
+<div id="node-search-message" style="display: none;">No subject-level results found.<br/><!--<g:link controller="RWG" action="index">Switch to Browse view</g:link>--></div>
 <div id="filter-div" style="display: none;"></div>
 <g:form name="exportdsform" controller="export" action="exportDataset"/>
 <g:form name="exportgridform" controller="chart" action="exportGrid"/>
