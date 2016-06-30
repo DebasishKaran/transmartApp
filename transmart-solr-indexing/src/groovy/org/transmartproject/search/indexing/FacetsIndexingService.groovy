@@ -48,8 +48,8 @@ class FacetsIndexingService implements InitializingBean {
     public static final String FIELD_NAME_LAST_MODIFIED = 'last_modified_d'
     public static final String FIELD_NAME_TIMESTAMP = 'timestamp_d'
 
-    int commitChunkSize = 500
-    int queryChunkSize = 500
+    int commitChunkSize = 50000 // 500 //hugo's change
+    int queryChunkSize =  50000 // 500 //hugo's change
 
     private boolean uncommittedDeletions = false
     private List<SolrInputDocument> uncommittedDocuments = Lists.newArrayListWithCapacity(commitChunkSize)
@@ -166,7 +166,7 @@ class FacetsIndexingService implements InitializingBean {
 
     private void addDocumentInternal(SolrInputDocument doc) {
         assert doc != null
-        withRetry 'adding document', { solrFacetsCore.add doc }
+        //withRetry 'adding document', { solrFacetsCore.add doc }
 
         uncommittedDocuments << doc
         if (doc.containsKey(FIELD_NAME_FILE_PATH)) {
@@ -184,6 +184,14 @@ class FacetsIndexingService implements InitializingBean {
         }
 
         log.debug "Committing ${uncommittedDocuments.size()} Solr documents; ids: ${uncommittedDocuments*.getFieldValue('id')}"
+		log.debug "Submitting ${uncommittedDocuments.size()} Solr documents"
+		withRetry 'adding documents', { solrFacetsCore.add uncommittedDocuments }
+		
+		if (log.debugEnabled) {
+		     log.debug("Committing ${uncommittedDocuments.size()} Solr documents; " +
+		             "ids: ${uncommittedDocuments*.getFieldValue('id')}")
+		}
+		
         try {
             // allow exception to bubble up
             // don't move to file content indexing if this fails

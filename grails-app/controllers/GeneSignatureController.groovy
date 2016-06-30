@@ -440,19 +440,19 @@ class GeneSignatureController {
         try {
             gs = geneSignatureService.saveWizard(gs, file)
 
-            GeneSignature sig = gs
-            auditLogService.report("New Gene Signature", request,
-                action: actionName,
-                user: currentUserBean,
-                filename: file?.originalFilename,
-                size: gs
-            )
+//            GeneSignature sig = gs
+//            auditLogService.report("New Gene Signature", request,
+//                action: actionName,
+//                user: currentUserBean,
+//                filename: file?.originalFilename,
+//                size: gs
+//            )
 
             auditLogService.report("New Gene Signature", request,
-                action: actionName,
+                //action: actionName,
                 user: currentUserBean,
                 filename: file?.originalFilename,
-                size: gs.geneSigItems.size()
+                size: gs.geneSigItems.size().toString()
             )
 
             // clean up session

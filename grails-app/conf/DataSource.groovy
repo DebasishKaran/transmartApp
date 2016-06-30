@@ -33,6 +33,7 @@ dataSource_oauth2 {
 hibernate {
     cache.use_query_cache        = true
     cache.use_second_level_cache = true
+	hibernate.jdbc.fetch_size = 1000
 
     // make sure hibernate.cache.provider_class is not being set
     // see http://stackoverflow.com/a/3690212/127724 and the docs for the cache-ehcache plugin

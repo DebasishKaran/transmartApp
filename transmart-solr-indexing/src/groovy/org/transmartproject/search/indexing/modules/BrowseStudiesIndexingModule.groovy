@@ -25,7 +25,7 @@ class BrowseStudiesIndexingModule extends AbstractFacetsIndexingFolderModule<Bro
     private static final FacetsFieldImpl FIELD_STUDY_OBJECTIVE   = createFF 'study_objective_s'
     private static final FacetsFieldImpl FIELD_SPECIES           = createFF 'species_s'
     private static final FacetsFieldImpl FIELD_STUDY_PHASE       = createFF 'study_phase_s'
-    private static final FacetsFieldImpl FIELD_ACCESSION         = FacetsFieldImpl.create 'accession_s'
+    private static final FacetsFieldImpl FIELD_ACCESSION         = FacetsFieldImpl.create 'study_id_s'
 
     final Class<BrowseStudiesView> domainClass = BrowseStudiesView
     final String name = 'browse_studies'

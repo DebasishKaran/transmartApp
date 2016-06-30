@@ -66,7 +66,7 @@ class ConceptNamesIndexingModule implements FacetsIndexingModule {
                     return endOfData()
                 }
                 def el = toProcess.pop()
-                lastQueryNames = el.getAllDescendants()*.fullName
+                lastQueryNames = el.getAllDescendantsForFacets()
                 computeNext()
             }
         }
@@ -123,7 +123,13 @@ class ConceptNamesIndexingModule implements FacetsIndexingModule {
                 load: { dummy ->
                     def res = HashMultimap.create()
                     ontologyTermTagsResource.getTags(ImmutableSet.of(category), true)
-                            .each { e -> e.value.each { res.put(e.key.fullName, it) } }
+//						.each { e -> e.value.each { res.put(e.key.fullName, it) } }
+						.each {
+							e -> e.value.each {
+								//res.put(e.key.fullName, it)
+								res.put(it.ontologyTermFullName, it)
+								}
+							}
                     res
                 }] as CacheLoader, null).objectValue
     }

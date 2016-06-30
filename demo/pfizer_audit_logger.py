@@ -48,10 +48,14 @@ def send_auditlog_record(line):
     msg = json.loads(line)
     task = msg['event']
     user = msg['user']
+    
+    if user == "admin":
+        return None
+    
     if task == "User Access":
         action = user
     else:
-        action = msg.get('action') or '|'.join(msg.get(x) for x in ('study', 'subset1', 'subset2', 'analysis', 'query', 'facetQuery', 'clientId', 'experiment') if msg.get(x))
+        action = msg.get('action') or '|'.join(msg.get(x) for x in ('study', 'subset1', 'subset2', 'analysis', 'query', 'facetQuery', 'clientId', 'experiment', 'filename', 'size') if msg.get(x))
     args = dict(action = action,
                 application = msg['program'],
                 appVersion = msg['programVersion'],
@@ -69,7 +73,7 @@ def send_auditlog_record(line):
     #print(fullurl)
     try:
         #raise Exception('testing')
-        urllib.request.urlopen(Request(fullurl, method='POST'), timeout=TIMEOUT).readall()
+        urllib.request.urlopen(Request(fullurl, method='POST'), timeout=TIMEOUT).read()
     except Exception as exc:
         with countlock:
             failcount += 1

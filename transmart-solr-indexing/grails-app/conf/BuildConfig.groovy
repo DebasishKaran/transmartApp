@@ -36,10 +36,10 @@ grails.project.dependency.resolution = {
 //      runtime ':db-reverse-engineer:3.0.0'
 
         if (!dm) {
-            compile ':folder-management:1.2.2-SNAPSHOT'
-            compile ':biomart-domain:1.2.2-SNAPSHOT'
-            runtime ':transmart-core:1.2.2-SNAPSHOT'
-            test ':transmart-core-db-tests:1.2.2-SNAPSHOT'
+            compile ':folder-management:1.2.2'
+            compile ':biomart-domain:1.2.2'
+            runtime ':transmart-core:1.2.2'
+            //test ':transmart-core-db-tests:1.2.2-SNAPSHOT'
         } else {
             dm.internalDependencies delegate
         }

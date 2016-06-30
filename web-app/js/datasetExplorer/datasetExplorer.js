@@ -808,6 +808,8 @@ Ext.onReady(function () {
     loadPlugin('transmart-metacore-plugin', '/MetacoreEnrichment/loadScripts', function () {
         loadMetaCoreEnrichment(resultsTabPanel);
     }, true);
+    loadPlugin('gex', "/gexAnalysis/loadScripts", function () {
+    }, true);
 
     /* load the tabs registered with the extension mechanism */
     (function loadAnalysisTabExtensions() {

@@ -49,7 +49,7 @@ class FacetsSearchController {
                                           PSEUDO_FIELD_ALL,]
 
     private static final Pattern LUCENE_SPECIAL_CHARACTER = ~/[\Q+-&|!(){}[]^"~*?:\\E]/
-    private static final int MAX_RESULTS = 20
+    private static final int MAX_RESULTS = Holders.config.org.transmartproject.facetresultsmax
 
     // for faceting
     def getFilterCategories() {
@@ -149,7 +149,9 @@ class FacetsSearchController {
                 }
             }.flatten()
         }
-
+		
+		log.info("MAX_RESULTS = $MAX_RESULTS")
+		
         // build query
         def allFields = facetsQueryingService.allDisplaySettings.keySet()
         def q = new SolrQuery()

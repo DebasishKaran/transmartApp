@@ -18,6 +18,14 @@ grails.project.fork = [
         console: forkSettingsOther]
 
 grails.project.war.file = "target/${appName}.war"
+grails.plugin.location.'rdc-rmodules' = '../Rmodules'
+grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
+grails.plugin.location.'transmart-rest-api'='../transmart-rest-api'
+grails.plugin.location.'search-domain' = '../transmart-extensions/search-domain'
+grails.plugin.location.'biomart-domain' = '../transmart-extensions/biomart-domain'
+grails.plugin.location.'transmart-core' = '../transmart-core-db'
+grails.plugin.location.'transmart-gwas' = '../transmart-gwas'
+grails.plugin.location.'folder-management' = '../folder-management'
 
 /* we need at least servlet-api 2.4 because of HttpServletResponse::setCharacterEncoding */
 grails.servlet.version = "2.5"
@@ -42,17 +50,12 @@ grails.project.dependency.resolution = {
 
     if (!dm) {
         repositories {
-			//mavenCentral()
-			//mavenLocal()
-			//grailsHome()
-			//grailsCentral()
-			//grailsPlugins()
-			
+
 			grailsPlugins()
 			grailsHome()
             grailsCentral()
 			mavenLocal()
-            
+			mavenCentral()
 
             mavenRepo "https://repo.transmartfoundation.org/content/repositories/public/"
             mavenRepo "https://repo.thehyve.nl/content/repositories/public/"
@@ -63,7 +66,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         // you can remove whichever you're not using
-        runtime 'org.postgresql:postgresql:9.3-1100-jdbc4'
+        //runtime 'org.postgresql:postgresql:9.3-1100-jdbc4'
         runtime 'com.oracle:ojdbc7:12.1.0.1'
 
         runtime 'org.javassist:javassist:3.16.1-GA'
@@ -140,15 +143,16 @@ grails.project.dependency.resolution = {
 
         // support for static code analysis - see codenarc.reports property below
         compile ":codenarc:0.21"
-		//compile(':gex:0.1')
+		compile(':gex:0.1')
 
 
         if (!dm) {
+			compile(':folder-management:1.2.2')
             compile ':rdc-rmodules:1.2.2'
             runtime ':transmart-core:1.2.2'
 			runtime ':transmart-rest-api:1.2.2'
-            compile ':transmart-gwas:1.2.2'
-            test ':transmart-core-db-tests:1.2.2'
+            runtime ':transmart-gwas:1.2.2'
+            //test ':transmart-core-db-tests:1.2.2'
 
         } else {
             dm.internalDependencies delegate
@@ -164,8 +168,8 @@ grails.project.dependency.resolution = {
 dm?.with {
     configureInternalPlugin 'compile', 'rdc-rmodules'
     configureInternalPlugin 'runtime', 'transmart-core'
-    configureInternalPlugin 'test', 'transmart-core-db-tests'
-    configureInternalPlugin 'compile', 'transmart-gwas'
+    //configureInternalPlugin 'test', 'transmart-core-db-tests'
+    //configureInternalPlugin 'runtime', 'transmart-gwas'
     configureInternalPlugin 'compile', 'transmart-java'
     configureInternalPlugin 'compile', 'biomart-domain'
     configureInternalPlugin 'compile', 'search-domain'
