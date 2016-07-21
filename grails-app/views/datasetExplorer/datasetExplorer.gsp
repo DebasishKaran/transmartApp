@@ -173,6 +173,13 @@
             }
         }
     </script>
+    <script type="text/javascript">
+   			var sMailto = "mailto:DL-tranSMART_Support@pfizer.com?subject=tranSMART Bug/Feature Requests";
+   			function doMailto() {
+      		document.location.href = sMailto;
+  			 }
+	</script>
+    
 </head>
 
 <body>
@@ -197,6 +204,20 @@
 </script>
 
 <style>
+
+#feedBack{
+    position: fixed;
+    bottom: 20px;
+    right: 0px;
+    float: right;
+    background-color: #003366; 
+    display: block;
+    height:40px;
+    width:140px;
+    color: #ffffff;
+    border: 4px solid #2a66a2;
+    text-decoration: none;
+}
     #dialog-form {
         font-family: Arial, "sans serif";
         font-size: 1em;
@@ -282,6 +303,7 @@
         <input class="submit" type="submit" value="Save Subsets"/>
     </form>
 </div>
+
 <span id="visualizerSpan0"></span> <!-- place applet tag here -->
 <span id="visualizerSpan1"></span> <!-- place applet tag here -->
 <!-- ************************************** -->
@@ -290,6 +312,7 @@
 <script language="javascript">
     helpURL = '${grailsApplication.config.com.recomdata.searchtool.adminHelpURL}';
 </script>
+<button id="feedBack"><a href="javascript:doMailto()" style="text-decoration: none;"><font color="#FFFFFF">User Feedback</font></a></button>
 <!-- ************************************** -->
 <r:layoutResources/><%-- XXX: Use template --%>
 </body>
