@@ -199,12 +199,15 @@ jQuery.ajax({
 }
 
 function getChildConceptPatientCountsComplete(result, node) {
+	//window.alert("node attributes"+node.attributes);//added
     /* eval the response and look up in loop*/
 //var childaccess=Ext.util.JSON.decode(result.responseText).accesslevels;
 //var childcounts=Ext.util.JSON.decode(result.responseText).counts;
-var mobj=result;
+	var mobj=result;
     var childaccess = mobj.accesslevels;
     var childcounts = mobj.counts;
+    var childDataCommon = mobj.dataCommon; //added
+  
     /*var cca=new Array();
      var size=childcounts.size();
      for(var i=0;i<size;i++)
@@ -220,25 +223,50 @@ var mobj=result;
         var fullname = key.substr(key.indexOf("\\", 2), key.length);
         var count = childcounts[fullname];
         var access = childaccess[fullname];
+        var dataCommon = childDataCommon[fullname]; //added
         var child = children[i];
+        var level = child.attributes.level;
+       
         if (count != undefined) {
             child.setText(child.text + " (" + count + ")");
         }
 
-        if ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) //if im an admin or there is an access level other than locked leave node unlocked
-        {
-            //leave node unlocked must have some read access
+      //added dataCommon
+        if (dataCommon = 'YES'&& ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) && level =='1'){
+        	// edit child attribute so it looks like a data commons study
+        	child.ui.iconNode.className= 'x-tree-node-icon opengreenlockicon';
+        	
         }
+
+        else{      
+        	if ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) //if im an admin or there is an access level other than locked leave node unlocked
+            {
+                //leave node unlocked must have some read access
+            	//iconCls = "openredlockicon";
+            	//child.setIconCls = "openredlockicon";
+            	if (level =='1') {
+            		child.ui.iconNode.className= 'x-tree-node-icon openredlockicon';
+            	}
+            }
         else {
             //default node to locked
             //child.setText(child.text+" <b>Locked</b>");
+        	
+        	if (level =='1') {
+        		child.ui.iconNode.className= 'x-tree-node-icon closedredlockicon';
+            }
+
+        	//child.ui.iconNode.className= 'x-tree-node-icon closedredlockicon';
             child.attributes.access = 'locked';
             child.disable();
             child.on('beforeload', function (node) {
+            	
                 alert("Access to this node has been restricted. Please contact your administrator for access.");
                 return false
             });
+        	}
         }
+      
     }
     node.endUpdate();
 }
