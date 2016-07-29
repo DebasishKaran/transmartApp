@@ -37,7 +37,7 @@ class ExperimentController {
 		def value = params.term.toUpperCase();
         def studyType = params.studyType?.toUpperCase();
 		
-		def experiments = Experiment.executeQuery("SELECT accession, title FROM Experiment e WHERE upper(e.title) LIKE '%' || :term || '%' AND upper(e.type) = :studyType", [term: value, studyType: studyType], [max: 20]);
+		def experiments = Experiment.executeQuery("SELECT accession, title FROM Experiment e WHERE upper(e.title) LIKE '%' || :term || '%' AND upper(e.type) = :studyType ", [term: value, studyType: studyType], [max: 20]);
 
         def category = "STUDY"
         def categoryDisplay = "Study"
@@ -98,6 +98,18 @@ class ExperimentController {
 	def browseExperimentsMultiSelect = {
 
         def experiments
+		//String type = params.type?.toUpperCase();
+		
+		/*if (!type.contains("I2B2")) {
+			experiments = Experiment.findAllByType(type)
+			experiments = getSortedList(experiments)
+		}
+		else {
+			experiments = Experiment.list()
+			experiments = getSortedList(experiments)
+		}
+
+		render(template:'browseMulti',model:[experiments:experiments])*/
 
         if (params.type) {
             experiments = Experiment.findAllByType(params.type)

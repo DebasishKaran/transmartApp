@@ -1,4 +1,6 @@
 import grails.util.Environment
+import org.apache.log4j.DailyRollingFileAppender
+import org.transmart.logging.ChildProcessAppender
 
 def console
 if (!Environment.isWarDeployed() && Environment.isWithinShell()) {
@@ -200,7 +202,7 @@ log4j = {
      * (and don't forget to 'import org.apache.log4j.DailyRollingFileAppender',
      * 'import org.transmart.logging.ChildProcessAppender' and 'import org.transmart.logging.JsonLayout'.)
      */
-    /*
+    
     appenders {
         // default log directory is either the tomcat root directory or the
         // current working directory.
@@ -224,7 +226,7 @@ log4j = {
     trace fileAuditLogger: 'org.transmart.audit'
     trace processAuditLogger: 'org.transmart.audit'
     trace stdout: 'org.transmart.audit'
-    */
+    
 
     environments {
         test {
@@ -237,6 +239,8 @@ log4j = {
                 info('stdout')
             }
         }
+		
+
         }
     }
 
