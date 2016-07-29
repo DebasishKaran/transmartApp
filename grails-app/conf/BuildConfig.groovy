@@ -76,7 +76,7 @@ grails.project.dependency.resolution = {
         runtime 'org.javassist:javassist:3.16.1-GA'
 
         compile 'org.transmartproject:transmart-core-api:1.2.2-SNAPSHOT'
-
+		
         compile 'antlr:antlr:2.7.7'
         compile 'net.sf.opencsv:opencsv:2.3'
         compile "org.apache.lucene:lucene-core:2.4.0"
@@ -130,7 +130,7 @@ grails.project.dependency.resolution = {
         build ':rest-client-builder:2.0.1'
         build ':tomcat:7.0.52.1'
 
-        compile ':hibernate:3.6.10.16'
+        compile ':hibernate:3.6.10.10'
         compile ':cache-ehcache:1.0.5'
         compile ':quartz:1.0-RC2'
         // Not compatible with spring security 3.2 yet
@@ -138,6 +138,7 @@ grails.project.dependency.resolution = {
         compile ':spring-security-ldap:2.0-RC2'
         compile ':spring-security-core:2.0-RC5'
         compile ':spring-security-oauth2-provider:2.0-RC4'
+		compile ":mail:1.0.7"
 
         runtime ':prototype:1.0'
         runtime ':jquery:1.7.1'

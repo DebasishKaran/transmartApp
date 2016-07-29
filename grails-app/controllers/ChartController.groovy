@@ -117,10 +117,12 @@ class ChartController {
         log.trace("Requested counts for parent_concept_path=" + concept_key);
         def counts = i2b2HelperService.getChildrenWithPatientCountsForConcept(concept_key)
         def access = i2b2HelperService.getChildrenWithAccessForUserNew(concept_key, user)
+		def dataCommon = i2b2HelperService.getChildrenWithDataCommonStudyForConcept(concept_key) //added
         log.trace("access:" + (access as JSON));
         log.trace("counts = " + (counts as JSON))
+		log.trace("dataCommon = " + (dataCommon as JSON))
 
-        def obj = [counts: counts, accesslevels: access, test1: "works"]
+        def obj = [counts: counts, accesslevels: access, dataCommon: dataCommon, test1: "works"]
         render obj as JSON
     }
 

@@ -20,9 +20,11 @@
 
 import com.recomdata.db.DBHelper
 import com.recomdata.export.*
+
 import grails.util.Holders
 import groovy.sql.Sql
 import i2b2.*
+
 import org.transmart.CohortInformation
 import org.transmart.searchapp.AuthUser
 import org.transmart.searchapp.AuthUserSecureAccess
@@ -41,6 +43,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
+
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
@@ -5593,6 +5596,37 @@ class I2b2HelperService {
             return trials;
         }
     }
+	//Data Commons Study
+	def getChildrenWithDataCommonStudyForConcept(String concept_key){
+		def children = getChildPathsFromParentKey(concept_key);
+		
+		Sql sql = new Sql(dataSource);
+		def dataCommon = [:];
+		/*sql.eachRow("SELECT PATH,TAG from I2B2METADATA.i2b2_tags WHERE TAG_TYPE = 'Data Common Study' and PATH = ? ",[keyToPath(concept_key)],{ row ->
+			dataCommon.put(row.PATH, row.TAG)
+		})
+		sql.eachRow("select PATH,TAG from I2B2METADATA.i2b2_tags  where TAG_TYPE = 'Data Common Study' and PATH = ?", [keyToPath(concept_key)], { row ->
+			//log.trace("Trying to get paths with data common study for concept_path=" + keyToPath(concept_key));
+			dataCommon.put(row.PATH, row.TAG)
+		});*/
+		System.out.println("children"+children);
+		/*for (key in children.keySet()) {
+			def childtoken = children[key].toString();
+			//log.trace("Key:" + key + " Token:" + childtoken.toString());
+			sql.eachRow("SELECT PATH,TAG from I2B2METADATA.i2b2_tags WHERE TAG_TYPE = 'Data Common Study' and PATH = ?", [childtoken] , { row ->
+				dataCommon.put(row.PATH, row.TAG)
+			});
+
+		}*/
+		for (key in children) {
+			sql.eachRow("SELECT PATH,TAG from I2B2METADATA.i2b2_tags WHERE TAG_TYPE = 'Data Common Study' and PATH = ?", [key] , { row ->
+				dataCommon.put(row.PATH, row.TAG)
+			});
+
+		}
+		return dataCommon;
+	}
+
 }
 
 class SurvivalConcepts {

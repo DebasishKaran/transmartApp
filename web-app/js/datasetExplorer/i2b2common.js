@@ -142,6 +142,7 @@ function convertNodeToConcept(node)
 
     //Each node has a type (Categorical, Continuous, High Dimensional Data) that we need to populate. For now we will use the icon class.
     var nodeType = node.attributes.iconCls
+   
 
     if(oktousevalues=="Y"){value.mode="novalue";} //default to novalue
     
@@ -1897,6 +1898,8 @@ function getTreeNodeFromJsonNode(concept)
         var visualattributes    =   null;
         var sourcesystemcdnode  =   null;
         var sourcesystemcd      =   null;
+        var access 				=   null;//added
+        
  		
     level				= concept.level;
     key					= concept.key;
@@ -1914,12 +1917,15 @@ function getTreeNodeFromJsonNode(concept)
                               ? (concept.metadata.okToUseValues ? 'Y' : 'N')
                               : 'N'
 	    
+    access 				= concept.access;  //added by hari  
 	    //We need to replace the < signs with &lt;
 	    name = name.replace(/</gi,"&lt;");
 	    
 	    var iconCls	=	null;
 	    var cls		=	null;
 	    var tcls 	=	null;
+	 
+        
 	    
     if (oktousevalues != "N") {
 	    	iconCls="valueicon";
@@ -1947,10 +1953,36 @@ function getTreeNodeFromJsonNode(concept)
     if (visualattributes.indexOf('PROGRAM') != '-1') {
         iconCls="programicon";
     }
-
-    if (visualattributes.indexOf('STUDY') != '-1') {
-        iconCls="studyicon";
-    }
+   /* if (visualattributes.indexOf('STUDY') != '-1'){
+     iconCls = "studyicon";*/
+    
+    
+//    if (visualattributes.indexOf('STUDY') != '-1' && level == '1'){
+//    	if((access != undefined && access != 'Locked')|| GLOBAL.IsAdmin ){
+//        	iconCls = "openredlockicon" ;
+//    		}
+//           else if(access == 'Locked')
+//        	iconCls = "closedredlockicon";
+//    }
+    
+//    if (level == '1'){
+//		if((access != undefined && access != 'Locked')|| GLOBAL.IsAdmin )
+//    	iconCls = "openredlockicon" ;
+//       else 
+//    	iconCls = "closedredlockicon";
+//       
+//    }
+    
+ 
+/*    if (level == '1'){
+    	if(access == 'Locked'){
+    		iconCls = "closedredlockicon" ; 
+    	}
+    			else if (access != 'Locked') 	{
+    				iconCls = "openredlockicon";
+    			}
+      
+  }*/
 
     
 	    //set whether expanded or not.
@@ -1988,7 +2020,8 @@ function getTreeNodeFromJsonNode(concept)
             normalunits: normalunits,
             oktousevalues: oktousevalues,
             expanded: expand,
-            visualattributes : visualattributes
+            visualattributes : visualattributes,
+            //access: access  //access added
    		 });
    		 newnode.addListener('contextmenu',ontologyRightClick);
 	return newnode;
@@ -2015,6 +2048,7 @@ function getTreeNodeFromJSON(concept)
          var nodetype = visualattributes.substr(0, 1);
          var nodestatus = visualattributes.substr(1, 1);
          // A = active I = inactive H = hidden
+
          if(nodetype == 'F') // folder - dragable
          {
             leaf = false;
