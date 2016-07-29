@@ -1,0 +1,20 @@
+<plugin name='transmart-solr-indexing' version='0.1' grailsVersion='2.3.7 &gt; *'>
+  <author>Your name</author>
+  <title>Transmart Solr Indexing Plugin</title>
+  <description>Indexes documents into solr.
+</description>
+  <documentation>http://grails.org/plugin/transmart-solr-indexing</documentation>
+  <type>TransmartSolrIndexingGrailsPlugin</type>
+  <resources>
+    <resource>SolrIndexingCacheConfig</resource>
+    <resource>org.transmartproject.search.FacetsSearchController</resource>
+    <resource>org.transmartproject.search.indexing.IndexingController</resource>
+    <resource>org.transmartproject.search.browse.BioDataValuesView</resource>
+    <resource>org.transmartproject.search.browse.BrowseAnalysesView</resource>
+    <resource>org.transmartproject.search.browse.BrowseAssaysView</resource>
+    <resource>org.transmartproject.search.browse.BrowseFoldersView</resource>
+    <resource>org.transmartproject.search.browse.BrowseProgramsView</resource>
+    <resource>org.transmartproject.search.browse.BrowseStudiesView</resource>
+    <resource>org.transmartproject.search.browse.FolderStudyMappingView</resource>
+  </resources>
+</plugin>

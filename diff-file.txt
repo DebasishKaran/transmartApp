@@ -1,0 +1,206 @@
+diff --git a/application.properties b/application.properties
+index 8a55805..5b203c0 100644
+--- a/application.properties
++++ b/application.properties
+@@ -1,6 +1,6 @@
+ #Grails Metadata file
+ #Wed Apr 23 10:36:38 BST 2014
+-app.grails.version=2.3.11
++app.grails.version=2.3.7
+ app.name=transmart
+-app.version=2.3.1.Dev
++app.version=2.4.Test
+ app.servlet.version=2.5
+diff --git a/grails-app/conf/BuildConfig.groovy b/grails-app/conf/BuildConfig.groovy
+index 1631753..1cf7889 100644
+--- a/grails-app/conf/BuildConfig.groovy
++++ b/grails-app/conf/BuildConfig.groovy
+@@ -18,6 +18,14 @@ grails.project.fork = [
+         console: forkSettingsOther]
+ 
+ grails.project.war.file = "target/${appName}.war"
++grails.plugin.location.'rdc-rmodules' = '../Rmodules'
++grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
++grails.plugin.location.'transmart-rest-api'='../transmart-rest-api'
++grails.plugin.location.'search-domain' = '../transmart-extensions/search-domain'
++grails.plugin.location.'biomart-domain' = '../transmart-extensions/biomart-domain'
++grails.plugin.location.'transmart-core' = '../transmart-core-db'
++grails.plugin.location.'transmart-gwas' = '../transmart-gwas'
++grails.plugin.location.'folder-management' = '../folder-management'
+ 
+ /* we need at least servlet-api 2.4 because of HttpServletResponse::setCharacterEncoding */
+ grails.servlet.version = "2.5"
+@@ -42,17 +50,12 @@ grails.project.dependency.resolution = {
+ 
+     if (!dm) {
+         repositories {
+-			//mavenCentral()
+-			//mavenLocal()
+-			//grailsHome()
+-			//grailsCentral()
+-			//grailsPlugins()
+-			
++
+ 			grailsPlugins()
+ 			grailsHome()
+             grailsCentral()
+ 			mavenLocal()
+-            
++			mavenCentral()
+ 
+             mavenRepo "https://repo.transmartfoundation.org/content/repositories/public/"
+             mavenRepo "https://repo.thehyve.nl/content/repositories/public/"
+@@ -63,7 +66,7 @@ grails.project.dependency.resolution = {
+ 
+     dependencies {
+         // you can remove whichever you're not using
+-        runtime 'org.postgresql:postgresql:9.3-1100-jdbc4'
++        //runtime 'org.postgresql:postgresql:9.3-1100-jdbc4'
+         runtime 'com.oracle:ojdbc7:12.1.0.1'
+ 
+         runtime 'org.javassist:javassist:3.16.1-GA'
+@@ -140,15 +143,16 @@ grails.project.dependency.resolution = {
+ 
+         // support for static code analysis - see codenarc.reports property below
+         compile ":codenarc:0.21"
+-		//compile(':gex:0.1')
++		compile(':gex:0.1')
+ 
+ 
+         if (!dm) {
++			compile(':folder-management:1.2.2')
+             compile ':rdc-rmodules:1.2.2'
+             runtime ':transmart-core:1.2.2'
+ 			runtime ':transmart-rest-api:1.2.2'
+-            compile ':transmart-gwas:1.2.2'
+-            test ':transmart-core-db-tests:1.2.2'
++            runtime ':transmart-gwas:1.2.2'
++            //test ':transmart-core-db-tests:1.2.2'
+ 
+         } else {
+             dm.internalDependencies delegate
+@@ -164,8 +168,8 @@ grails.project.dependency.resolution = {
+ dm?.with {
+     configureInternalPlugin 'compile', 'rdc-rmodules'
+     configureInternalPlugin 'runtime', 'transmart-core'
+-    configureInternalPlugin 'test', 'transmart-core-db-tests'
+-    configureInternalPlugin 'compile', 'transmart-gwas'
++    //configureInternalPlugin 'test', 'transmart-core-db-tests'
++    //configureInternalPlugin 'runtime', 'transmart-gwas'
+     configureInternalPlugin 'compile', 'transmart-java'
+     configureInternalPlugin 'compile', 'biomart-domain'
+     configureInternalPlugin 'compile', 'search-domain'
+diff --git a/grails-app/conf/Config.groovy b/grails-app/conf/Config.groovy
+index a5b9e94..89099b1 100644
+--- a/grails-app/conf/Config.groovy
++++ b/grails-app/conf/Config.groovy
+@@ -286,4 +286,4 @@ grails.plugin.springsecurity.oauthProvider.accessTokenLookup.className = 'org.tr
+ grails.plugin.springsecurity.oauthProvider.refreshTokenLookup.className = 'org.transmart.oauth2.RefreshToken'
+ 
+ // Url to request access to a study
+-// requestStudyAccessUrl = 'mailto:support@thehyve.nl?subject=Request for access to study&body=Please give me, user {userName} ({userId}), access to study {studyName} ({studyId}).'
++requestStudyAccessUrl = 'mailto:DL-tranSMART_Support@pfizer.com?subject=Request for access to study&body=Please give me, user {userName} ({userId}), access to study {studyName} ({studyId}).'
+diff --git a/transmart-solr-indexing/application.properties b/transmart-solr-indexing/application.properties
+index 136b18f..8e442b8 100644
+--- a/transmart-solr-indexing/application.properties
++++ b/transmart-solr-indexing/application.properties
+@@ -1,5 +1,5 @@
+ #Grails Metadata file
+ #Thu Mar 24 15:44:06 CET 2016
+-app.grails.version=2.3.11
++app.grails.version=2.3.7
+ app.name=transmart-solr-indexing
+ app.servlet.version=2.5
+diff --git a/transmart-solr-indexing/grails-app/conf/BuildConfig.groovy b/transmart-solr-indexing/grails-app/conf/BuildConfig.groovy
+index bfbd31b..435f283 100644
+--- a/transmart-solr-indexing/grails-app/conf/BuildConfig.groovy
++++ b/transmart-solr-indexing/grails-app/conf/BuildConfig.groovy
+@@ -36,10 +36,10 @@ grails.project.dependency.resolution = {
+ //      runtime ':db-reverse-engineer:3.0.0'
+ 
+         if (!dm) {
+-            compile ':folder-management:1.2.2-SNAPSHOT'
+-            compile ':biomart-domain:1.2.2-SNAPSHOT'
+-            runtime ':transmart-core:1.2.2-SNAPSHOT'
+-            test ':transmart-core-db-tests:1.2.2-SNAPSHOT'
++            compile ':folder-management:1.2.2'
++            compile ':biomart-domain:1.2.2'
++            runtime ':transmart-core:1.2.2'
++            //test ':transmart-core-db-tests:1.2.2-SNAPSHOT'
+         } else {
+             dm.internalDependencies delegate
+         }
+diff --git a/transmart-solr-indexing/grails-app/controllers/org/transmartproject/search/FacetsSearchController.groovy b/transmart-solr-indexing/grails-app/controllers/org/transmartproject/search/FacetsSearchController.groovy
+index 48889fd..c8e2772 100644
+--- a/transmart-solr-indexing/grails-app/controllers/org/transmartproject/search/FacetsSearchController.groovy
++++ b/transmart-solr-indexing/grails-app/controllers/org/transmartproject/search/FacetsSearchController.groovy
+@@ -364,7 +364,7 @@ class GetFacetsCommand {
+     static constraints = {
+         operator inList: ['OR', 'AND']
+         fieldTerms validator: { val, obj ->
+-            val.values().every { it.validate() }
++			val?.values().every { it.validate() }
+         }
+     }
+ }
+diff --git a/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/BrowseTagsIndexingModule.groovy b/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/BrowseTagsIndexingModule.groovy
+index 3c3fc55..3cb2dfd 100644
+--- a/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/BrowseTagsIndexingModule.groovy
++++ b/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/BrowseTagsIndexingModule.groovy
+@@ -108,6 +108,8 @@ class BrowseTagsIndexingModule implements FacetsIndexingModule {
+     }
+ 
+     private createField(String tagTypeName, String tagItemDescription, Number displayOrder) {
++		if (!tagTypeName)
++			return;
+         def tagTypeNameForIndex = tagTypeName
+                 .toLowerCase(Locale.ENGLISH)
+ 
+@@ -128,10 +130,12 @@ class BrowseTagsIndexingModule implements FacetsIndexingModule {
+             def (dummy, tagTypeName, tagItemDescription, displayOrder, tagValue) = it
+ 
+             def field = createField(tagTypeName, tagItemDescription, displayOrder)
+-            if (field.type == FacetsFieldType.INTEGER && tagValue?.isLong()) {
+-                tagValue = tagValue as Long
+-            }
+-            builder[field] = tagValue
++			if (field){
++	            if (field.type == FacetsFieldType.INTEGER && tagValue?.isLong()) {
++	                tagValue = tagValue as Long
++	            }
++	            builder[field] = tagValue
++			}
+         }
+ 
+         new FacetsDocument(
+diff --git a/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/ConceptNamesIndexingModule.groovy b/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/ConceptNamesIndexingModule.groovy
+index 8b42460..bc3ad00 100644
+--- a/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/ConceptNamesIndexingModule.groovy
++++ b/transmart-solr-indexing/src/groovy/org/transmartproject/search/indexing/modules/ConceptNamesIndexingModule.groovy
+@@ -123,7 +123,12 @@ class ConceptNamesIndexingModule implements FacetsIndexingModule {
+                 load: { dummy ->
+                     def res = HashMultimap.create()
+                     ontologyTermTagsResource.getTags(ImmutableSet.of(category), true)
+-                            .each { e -> e.value.each { res.put(e.key.fullName, it) } }
++                            .each { e -> e.value.each { 
++								if (e && e.key){
++									res.put(e.key.fullName, it)
++									} 
++								} 
++							}
+                     res
+                 }] as CacheLoader, null).objectValue
+     }
+diff --git a/web-app/js/datasetExplorer/datasetExplorer.js b/web-app/js/datasetExplorer/datasetExplorer.js
+index 834fd15..c750398 100644
+--- a/web-app/js/datasetExplorer/datasetExplorer.js
++++ b/web-app/js/datasetExplorer/datasetExplorer.js
+@@ -807,6 +807,8 @@ Ext.onReady(function () {
+     loadPlugin('transmart-metacore-plugin', '/MetacoreEnrichment/loadScripts', function () {
+         loadMetaCoreEnrichment(resultsTabPanel);
+     }, true);
++    loadPlugin('gex', "/gexAnalysis/loadScripts", function () {
++    }, true);
+ 
+     /* load the tabs registered with the extension mechanism */
+     (function loadAnalysisTabExtensions() {
