@@ -1686,7 +1686,9 @@ function createTree(ontresponse) {
         var lockedNode = true;
         if ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) {
             lockedNode = false;
+           
         }
+      
 
         if (GLOBAL.PathToExpand.indexOf(key) > -1 && GLOBAL.UniqueLeaves.indexOf(key + ",") == -1 && !lockedNode) {
             autoExpand = true;
@@ -1708,7 +1710,8 @@ function createTree(ontresponse) {
         if (lockedNode) {
             tcls += ' locked';
         }
-
+   
+      
         var isSearchResult = (GLOBAL.PathToExpand.indexOf(key + ",") > -1);
         if (isSearchResult) {
             tcls += ' searchResultNode';
