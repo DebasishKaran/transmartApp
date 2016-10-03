@@ -35,6 +35,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.transmart.searchapp.AccessLog
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache
 import org.transmart.searchapp.AuthUser
+import org.transmart.searchapp.Principal
 
 /**
  * Login Controller
@@ -146,7 +147,18 @@ class LoginController {
 				return
 			}
 			else {
-			
+				
+				if(!userInBd.enabled) {
+					String msg = SpringSecurityUtils.securityConfig.errors.login.disabled
+					new AccessLog(username: cUser, event:"Login Disabled",
+					eventmessage: msg,
+					accesstime:new Date()).save()
+					flash.message = msg
+					//redirect action: auth, params: params
+					render view: 'auth', model: [postUrl: request.contextPath + SpringSecurityUtils.securityConfig.apf.filterProcessesUrl]
+					return
+				}
+				
 				springSecurityService.reauthenticate(cUser)
 				
 				redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl

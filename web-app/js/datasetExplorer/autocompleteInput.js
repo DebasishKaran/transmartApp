@@ -67,7 +67,7 @@ AutocompleteInput = (function() {
                 }
             })
             .autocomplete(_ui)
-            .data('autocomplete')._renderItem = function(ul, item) {
+            .data('uiAutocomplete')._renderItem = function(ul, item) {
             return jQuery('<li></li>')
                 .data('item.autocomplete', item)
                 .append('<a style="color: #0000FF"> ' + item.label + '</a>')

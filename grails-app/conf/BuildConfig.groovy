@@ -19,7 +19,7 @@ grails.project.fork = [
 
 grails.project.war.file = "target/${appName}.war"
 grails.plugin.location.'rdc-rmodules' = '../Rmodules'
-//grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
+grails.plugin.location.'gex'='../tranSMART-Analyst-Module'
 grails.plugin.location.'transmart-rest-api'='../transmart-rest-api'
 grails.plugin.location.'search-domain' = '../transmart-extensions/search-domain'
 grails.plugin.location.'biomart-domain' = '../transmart-extensions/biomart-domain'

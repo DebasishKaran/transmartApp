@@ -64,7 +64,7 @@ ExportDropTarget = (function() {
                     // clinical data
                     selectors = [selector];
                 }
-                anyChecked = anyChecked || selectors.any(function(sel) {return jQuery(sel).prop('checked')});
+                anyChecked = anyChecked || selectors.filter(function(sel) {return jQuery(sel).prop('checked')});
                 if (anyChecked) return;
 
                 var prio = exp.displayAttributes.selectOnFilterPriority || 0;

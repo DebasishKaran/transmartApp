@@ -232,7 +232,7 @@ function getChildConceptPatientCountsComplete(result, node) {
         }
 
       //added dataCommon
-        if (dataCommon = 'YES'&& ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) && level =='1'){
+        if ((dataCommon == 'Yes' || dataCommon == 'YES') && ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) && level =='1'){
         	// edit child attribute so it looks like a data commons study
         	child.ui.iconNode.className= 'x-tree-node-icon opengreenlockicon';
         	
@@ -240,30 +240,25 @@ function getChildConceptPatientCountsComplete(result, node) {
 
         else{      
         	if ((access != undefined && access != 'Locked') || GLOBAL.IsAdmin) //if im an admin or there is an access level other than locked leave node unlocked
-            {
-                //leave node unlocked must have some read access
-            	//iconCls = "openredlockicon";
-            	//child.setIconCls = "openredlockicon";
-            	if (level =='1') {
-            		child.ui.iconNode.className= 'x-tree-node-icon openredlockicon';
+        	{
+                	//leave node unlocked must have some read access
+            		if (level =='1') {
+            			child.ui.iconNode.className= 'x-tree-node-icon openredlockicon';
+            		}
             	}
-            }
-        else {
-            //default node to locked
-            //child.setText(child.text+" <b>Locked</b>");
+        	else {
+       		     	//default node to locked
         	
-        	if (level =='1') {
-        		child.ui.iconNode.className= 'x-tree-node-icon closedredlockicon';
-            }
+        		if (level =='1') {
+        			child.ui.iconNode.className= 'x-tree-node-icon closedredlockicon';
+        		}
 
-        	//child.ui.iconNode.className= 'x-tree-node-icon closedredlockicon';
-            child.attributes.access = 'locked';
-            child.disable();
-            child.on('beforeload', function (node) {
-            	
-                alert("Access to this node has been restricted. Please contact your administrator for access.");
-                return false
-            });
+        		child.attributes.access = 'locked';
+        		child.disable();
+        		child.on('beforeload', function (node) {
+        			alert("Access to this node has been restricted. Please contact your administrator for access.");
+        			return false
+        		});
         	}
         }
       
