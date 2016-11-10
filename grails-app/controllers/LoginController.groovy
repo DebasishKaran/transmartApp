@@ -86,7 +86,7 @@ class LoginController {
 		String cUser=null
 		if (header!=null && !header.isEmpty())
 			cUser=request.getHeader(header)
-		cUser="berubh"
+		
 
 		// if enabled guest and not forced login
 		if(guestLoginEnabled && !forcedFormLogin){
