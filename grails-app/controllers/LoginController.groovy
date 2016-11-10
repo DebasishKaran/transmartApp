@@ -73,43 +73,6 @@ class LoginController {
 	/**
 	 * Show the login page.
 	 */
-	//	def auth = {
-	//		nocache response
-	//
-	//		def guestAutoLogin = grailsApplication.config.com.recomdata.guestAutoLogin;
-	//		boolean guestLoginEnabled = (guestAutoLogin == 'true' || guestAutoLogin.is(true))
-	//        log.info("enabled guest login")
-	//        //log.info("requet:"+request.getQueryString())
-	//		boolean forcedFormLogin = request.getQueryString() != null
-	//		log.info("User is forcing the form login? : " + forcedFormLogin)
-	//
-	//		// if enabled guest and not forced login
-	//		if(guestLoginEnabled && !forcedFormLogin){
-	//				log.info("proceeding with auto guest login")
-	//				def guestuser = grailsApplication.config.com.recomdata.guestUserName;
-	//
-	//				UserDetails ud = userDetailsService.loadUserByUsername(guestuser)
-	//				if(ud!=null){
-	//					log.debug("We have found user: ${ud.username}")
-	//					springSecurityService.reauthenticate(ud.username)
-	//					redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
-	//
-	//				}else{
-	//					log.info("can not find the user:"+guestuser);
-	//				}
-	//			}
-	//
-	//        /*if (springSecurityService.isLoggedIn()) {
-	//			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
-	//		} else	{
-	//            render view: 'auth', model: [postUrl: request.contextPath + SpringSecurityUtils.securityConfig.apf.filterProcessesUrl]
-	//        }*/
-	//        render view: 'auth', model: [postUrl: request.contextPath + SpringSecurityUtils.securityConfig.apf.filterProcessesUrl]
-	//	}
-
-	/**
-	 * Show the login page.
-	 */
 	def auth = {
 		nocache response
 
@@ -123,6 +86,7 @@ class LoginController {
 		String cUser=null
 		if (header!=null && !header.isEmpty())
 			cUser=request.getHeader(header)
+		cUser="berubh"
 
 		// if enabled guest and not forced login
 		if(guestLoginEnabled && !forcedFormLogin){
@@ -143,14 +107,14 @@ class LoginController {
 		else if (cUser!=null)
 		{
 			def userInBd = AuthUser.findByUsername(cUser)
-			def deploymentGroup =  Principal.findByname("Deployment Group")//UserGroup.findById('106815')//added by hari
-			//def userId = AuthUser.executeQuery("SELECT o.id FROM SEARCHAPP.search_auth_user o WHERE o.username = '"+cUser+"'")
-			//getting user id
-			def userId = AuthUser.findById(cUser.id)
-			//getting list of userid present in the deploymnet group
+			def deploymentGroup =  Principal.findByName("Deployment Group")//UserGroup.findById('106815')//added by hari
 			def userList = []
-			def userListc = UserGroup.executeQuery("SELECT AUTH_USER_ID FROM SEARCHAPP.SEARCH_AUTH_GROUP_MEMBER WHERE AUTH_GROUP_ID = '106815'");
-			userList.add(userListc)
+			def ug = UserGroup.findById(deploymentGroup.id)//.executeQuery("SELECT AUTH_USER_ID FROM SEARCHAPP.SEARCH_AUTH_GROUP_MEMBER WHERE AUTH_GROUP_ID = '106815'");
+			
+			ug.members.each { currUser ->
+				userList.add(currUser.id)
+			}
+			
 			if (userInBd == null) {
 				render(view: 'noUserFound', model: [userName: cUser])
 				return
@@ -175,7 +139,8 @@ class LoginController {
 					if (deploymentGroup.enabled) { // if enabled then it is in deployment mode
 
 						
-						if(userList.contains(userId)){
+						if(userList.contains(userInBd.id)){
+							springSecurityService.reauthenticate(cUser)
 							redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 							return
 						}
