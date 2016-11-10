@@ -39,7 +39,7 @@ class UserGroupController {
 
     def list = {
         if(!params.max) {
-            params.max = 10
+            params.max = 100  //added by hari
         }
         [ userGroupInstanceList: UserGroup.findAllByIdGreaterThanEquals(0, params ) ]
     }
